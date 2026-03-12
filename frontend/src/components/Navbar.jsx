@@ -2,9 +2,12 @@ import React from 'react';
 import { Bell, Search, LogOut, Activity, Stethoscope, Users } from 'lucide-react';
 import { useAuth } from '../utils/AuthContext';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const RoleIcon = user?.role === 'doctor' ? Stethoscope : Users;
 
   return (
@@ -20,12 +23,14 @@ const Navbar = () => {
            <Search className="w-4 h-4 text-slate-400 mr-2" />
            <input 
              type="text" 
-             placeholder="Search patients, appointments..." 
+             placeholder={t('search_placeholder', 'Search patients, appointments...')}
              className="bg-transparent border-none outline-none w-full text-sm text-slate-700 placeholder-slate-400"
            />
         </div>
 
         <div className="flex items-center space-x-4 ml-auto">
+          <LanguageSwitcher />
+        
           <button className="relative p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
             <Bell className="w-5 h-5" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
@@ -35,8 +40,8 @@ const Navbar = () => {
           
           <div className="flex items-center space-x-3">
             <div className="flex flex-col items-end hidden sm:flex">
-              <span className="text-sm font-semibold text-slate-900 capitalize">{user?.role || 'Guest'}</span>
-              <span className="text-xs text-slate-500">Clinic Staff</span>
+              <span className="text-sm font-semibold text-slate-900 capitalize">{user?.role ? t(`roles.${user.role}`, user.role) : t('roles.guest', 'Guest')}</span>
+              <span className="text-xs text-slate-500">{t('clinic_staff', 'Clinic Staff')}</span>
             </div>
             <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 border border-blue-200">
                <RoleIcon className="w-5 h-5" />

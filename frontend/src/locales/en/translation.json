@@ -1,0 +1,83 @@
+{
+  "translation": {
+    "login": {
+      "subtitle": "Sign in to your professional account",
+      "email_label": "Email Address",
+      "email_placeholder": "receptionist@clinic.com",
+      "password_label": "Password",
+      "password_placeholder": "Enter your password",
+      "sign_in_button": "Sign In",
+      "demo_accounts": "Demo Accounts:",
+      "demo_password": "Password:"
+    },
+    "roles": {
+      "doctor": "Doctor",
+      "receptionist": "Receptionist",
+      "guest": "Guest"
+    },
+    "clinic_staff": "Clinic Staff",
+    "search_placeholder": "Search patients, appointments...",
+    "doctor_dashboard": {
+      "hello": "Hello, {{name}}",
+      "you_have": "You have ",
+      "pending_appointments": " pending appointments ",
+      "today_next_consult": "today. Your next consultation is at 10:00 AM.",
+      "todays_schedule": "Today's Schedule",
+      "view_all": "View All →",
+      "loading_schedule": "Loading schedule...",
+      "status": {
+        "Confirmed": "Confirmed",
+        "Pending": "Pending"
+      },
+      "view_notes": "View Notes",
+      "no_appointments": "No appointments scheduled for today.",
+      "weekly_summary": "Weekly Summary",
+      "patients_seen": "Patients Seen",
+      "hours_consulted": "Hours Consulted"
+    },
+    "receptionist_dashboard": {
+      "title": "Receptionist Dashboard",
+      "subtitle": "Here is what is happening at the clinic today.",
+      "new_appointment": "New Appointment",
+      "stats": {
+        "total_appointments": "Total Appointments",
+        "new_patients": "New Patients",
+        "clinic_activity": "Clinic Activity"
+      },
+      "recent_appointments": "Recent Appointments",
+      "view_calendar": "View Calendar →",
+      "table_headers": {
+        "patient": "Patient",
+        "doctor": "Doctor",
+        "date_time": "Date & Time",
+        "status": "Status"
+      },
+      "loading": "Loading appointments...",
+      "no_recent_appointments": "No recent appointments found."
+    },
+    "sidebar": {
+      "main_menu": "Main Menu",
+      "receptionist": {
+        "dashboard": "Dashboard",
+        "book": "Book Appointment",
+        "patients": "Patient List",
+        "calendar": "Calendar View"
+      },
+      "doctor": {
+        "overview": "Overview",
+        "schedule": "Upcoming Schedule",
+        "patients": "My Patients",
+        "calendar": "Calendar View"
+      },
+      "sign_out": "Sign Out"
+    },
+    "dummy_data": {
+      "John Doe": "John Doe",
+      "Jane Smith": "Jane Smith",
+      "Dr. Smith": "Dr. Smith",
+      "Dr. Johnson": "Dr. Johnson",
+      "Consultation": "Consultation",
+      "Follow up": "Follow up"
+    }
+  }
+}
