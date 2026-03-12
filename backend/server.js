@@ -21,5 +21,14 @@ app.use("/api/appointments", appointmentRoutes);
 
 app.use(errorHandler);
 
+app.listen(5000,()=>{
+    console.log("Server running on port 5000")
+})
+
+const authRoutes = require("./routes/authRoutes")
+
+app.use("/auth",authRoutes)
+
+require("dotenv").config()
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
