@@ -4,23 +4,25 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, Calendar, UserPlus, Users, Clock, Activity, LogOut, CheckSquare
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Sidebar = ({ isOpen }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const receptionistLinks = [
-    { path: '/receptionist', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/receptionist/book', icon: UserPlus, label: 'Book Appointment' },
-    { path: '/receptionist/patients', icon: Users, label: 'Patient List' },
-    { path: '/receptionist/calendar', icon: Calendar, label: 'Calendar View' },
+    { path: '/receptionist', icon: LayoutDashboard, label: t('sidebar.receptionist.dashboard') },
+    { path: '/receptionist/book', icon: UserPlus, label: t('sidebar.receptionist.book') },
+    { path: '/receptionist/patients', icon: Users, label: t('sidebar.receptionist.patients') },
+    { path: '/receptionist/calendar', icon: Calendar, label: t('sidebar.receptionist.calendar') },
   ];
 
   const doctorLinks = [
-    { path: '/doctor', icon: LayoutDashboard, label: 'Overview' },
-    { path: '/doctor/schedule', icon: CheckSquare, label: 'Upcoming Schedule' },
-    { path: '/doctor/patients', icon: Users, label: 'My Patients' },
-    { path: '/doctor/calendar', icon: Calendar, label: 'Calendar View' },
+    { path: '/doctor', icon: LayoutDashboard, label: t('sidebar.doctor.overview') },
+    { path: '/doctor/schedule', icon: CheckSquare, label: t('sidebar.doctor.schedule') },
+    { path: '/doctor/patients', icon: Users, label: t('sidebar.doctor.patients') },
+    { path: '/doctor/calendar', icon: Calendar, label: t('sidebar.doctor.calendar') },
   ];
 
   const links = user?.role === 'doctor' ? doctorLinks : receptionistLinks;
@@ -36,7 +38,7 @@ const Sidebar = ({ isOpen }) => {
       {/* Navigation */}
       <nav className="flex-1 py-6 px-4 space-y-1 overflow-y-auto custom-scrollbar">
         <div className="mb-4 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-          Main Menu
+          {t('sidebar.main_menu')}
         </div>
         {links.map((link) => {
           const Icon = link.icon;
@@ -65,7 +67,7 @@ const Sidebar = ({ isOpen }) => {
           className="w-full flex items-center px-3 py-2.5 rounded-lg text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200 group"
         >
           <LogOut className="w-5 h-5 mr-3 group-hover:text-red-400" />
-          <span className="font-medium text-sm">Sign Out</span>
+          <span className="font-medium text-sm">{t('sidebar.sign_out')}</span>
         </button>
       </div>
     </div>

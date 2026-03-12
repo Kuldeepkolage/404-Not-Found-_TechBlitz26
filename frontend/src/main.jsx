@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './utils/AuthContext.jsx'
+import './i18n.js'
 import './index.css'
 import App from './App.jsx'
 
