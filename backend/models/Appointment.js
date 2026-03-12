@@ -1,22 +1,13 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose";
 
-const AppointmentSchema = new mongoose.Schema({
-    patientName:{
-        type:String,
-        required:true
-    },
-    doctor:{
-        type:String,
-        required:true
-    },
-    date:{
-        type:String,
-        required:true
-    },
-    time:{
-        type:String,
-        required:true
-    }
-})
+const appointmentSchema = new mongoose.Schema({
+  patient_id: { type: mongoose.Schema.Types.ObjectId, ref: "Patient" },
+  doctor_id: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor" },
+  date: String,
+  start_time: String,
+  end_time: String,
+  status: { type: String, enum: ["scheduled", "cancelled", "completed"], default: "scheduled" },
+  reason: String,
+}, { timestamps: true });
 
-module.exports = mongoose.model("Appointment", AppointmentSchema)
+export default mongoose.model("Appointment", appointmentSchema);
