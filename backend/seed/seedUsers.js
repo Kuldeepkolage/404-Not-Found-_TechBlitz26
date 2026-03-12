@@ -1,9 +1,10 @@
+require("dotenv").config()
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 const User = require("../models/User")
 
 mongoose.connect(
-"mongodb+srv://ninad233374105_db_user:Zlucoocrt39BNxXs@cluster0.6fcbbnj.mongodb.net/clinic?retryWrites=true&w=majority"
+process.env.MONGO_URI
 )
 
 async function seed(){
