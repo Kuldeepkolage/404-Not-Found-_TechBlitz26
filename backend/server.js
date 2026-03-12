@@ -20,3 +20,9 @@ app.use("/appointments", appointmentRoutes)
 app.listen(5000,()=>{
     console.log("Server running on port 5000")
 })
+
+const authRoutes = require("./routes/authRoutes")
+
+app.use("/auth",authRoutes)
+
+require("dotenv").config()
