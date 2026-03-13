@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { User, Lock, Activity } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -36,12 +38,12 @@ const Login = () => {
             <Activity className="w-10 h-10 text-white transform -rotate-3" />
           </div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">ClinicPro</h1>
-          <p className="text-slate-500 font-medium">Sign in to your professional account</p>
+          <p className="text-slate-500 font-medium">{t('login.subtitle', 'Sign in to your professional account')}</p>
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-1.5">
-            <label className="block text-sm font-semibold text-slate-700">Email Address</label>
+            <label className="block text-sm font-semibold text-slate-700">{t('login.email_label', 'Email Address')}</label>
             <div className="relative group">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-blue-600 transition-colors" />
               <input
@@ -49,14 +51,14 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all text-slate-900 font-medium placeholder:text-slate-400 placeholder:font-normal"
-                placeholder="receptionist@clinic.com"
+                placeholder={t('login.email_placeholder', 'receptionist@clinic.com')}
                 required
               />
             </div>
           </div>
           
           <div className="space-y-1.5">
-            <label className="block text-sm font-semibold text-slate-700">Password</label>
+            <label className="block text-sm font-semibold text-slate-700">{t('login.password_label', 'Password')}</label>
             <div className="relative group">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-blue-600 transition-colors" />
               <input
@@ -64,7 +66,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all text-slate-900 font-medium placeholder:text-slate-400 placeholder:font-normal"
-                placeholder="Enter your password"
+                placeholder={t('login.password_placeholder', 'Enter your password')}
                 required
               />
             </div>
@@ -78,18 +80,18 @@ const Login = () => {
             {loading ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
-              <span>Sign In</span>
+              <span>{t('login.sign_in_button', 'Sign In')}</span>
             )}
           </button>
         </form>
 
         <div className="mt-8 pt-8 border-t border-slate-100 pb-2">
           <p className="text-sm text-slate-500 text-center leading-relaxed">
-            <span className="font-semibold text-slate-700">Demo Accounts:</span><br />
+            <span className="font-semibold text-slate-700">{t('login.demo_accounts', 'Demo Accounts:')}</span><br />
             <span className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded text-blue-600 mt-2 inline-block">receptionist@clinic.com</span>
             <span className="inline-block mx-2 text-slate-300">|</span>
             <span className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded text-blue-600 inline-block">doctor@clinic.com</span><br />
-            <span className="mt-1.5 inline-block">Password: <span className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded text-emerald-600">password</span></span>
+            <span className="mt-1.5 inline-block">{t('login.demo_password', 'Password:')} <span className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded text-emerald-600">password</span></span>
           </p>
         </div>
       </div>
