@@ -1,6 +1,6 @@
-const Appointment = require("../models/Appointment")
+import Appointment from "../models/Appointment.js";
 
-exports.bookAppointment = async(req,res)=>{
+export const bookAppointment = async(req,res)=>{
 
     const {patientName,doctor,date,time} = req.body
 
@@ -31,7 +31,32 @@ exports.bookAppointment = async(req,res)=>{
     })
 }
 
-exports.getAppointments = async(req,res)=>{
+export const getAppointments = async(req,res)=>{
     const appointments = await Appointment.find()
     res.json(appointments)
+}
+
+export const rescheduleAppointment = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const { date, time } = req.body;
+
+        const appointment = await Appointment.findById(id);
+        if (!appointment) {
+            return res.status(404).json({ message: "Appointment not found" });
+        }
+
+        const updatedAppointment = await Appointment.findByIdAndUpdate(
+            id,
+            { date, time, start_time: time },
+            { new: true }
+        );
+
+        res.json({
+            message: "Appointment rescheduled successfully",
+            appointment: updatedAppointment
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to reschedule appointment", error: error.message });
+    }
 }

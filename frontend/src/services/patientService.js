@@ -5,7 +5,7 @@ export const patientService = {
   getPatients: async () => {
     try {
       const response = await api.get('/patients');
-      return response.data;
+      return response.data.data || response.data;
     } catch (error) {
       console.error('Failed to fetch patients:', error);
       return [
@@ -19,7 +19,7 @@ export const patientService = {
     try {
       const response = await api.post('/patients', patientData);
       toast.success('Patient added successfully');
-      return response.data;
+      return response.data.data || response.data;
     } catch (error) {
       toast.error('Failed to add patient');
       throw error;

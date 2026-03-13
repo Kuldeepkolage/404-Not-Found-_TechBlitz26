@@ -1,10 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { 
+import { 
   createDoctor, 
   getDoctors, 
   getDoctorById 
-} = require('../controllers/doctorController');
+} from '../controllers/doctorController.js';
 
 // You can import and add your authentication middleware here to protect these routes
 // const { protect, authorize } = require('../middleware/auth');
@@ -16,4 +16,4 @@ router.route('/')
 router.route('/:id')
   .get(getDoctorById);
 
-module.exports = router;
+export default router;

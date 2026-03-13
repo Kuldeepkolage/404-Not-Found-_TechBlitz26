@@ -1,13 +1,16 @@
-const express = require("express")
-const router = express.Router()
+import express from "express";
+const router = express.Router();
 
-const {
+import {
     bookAppointment,
-    getAppointments
-} = require("../controllers/appointmentController")
+    getAppointments,
+    rescheduleAppointment
+} from "../controllers/appointmentController.js";
 
 router.post("/book", bookAppointment)
 
 router.get("/", getAppointments)
 
-module.exports = router
+router.put("/:id/reschedule", rescheduleAppointment)
+
+export default router;

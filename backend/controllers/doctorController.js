@@ -1,9 +1,9 @@
-const Doctor = require('../models/Doctor');
+import Doctor from '../models/Doctor.js';
 
 // @desc    Create new doctor
 // @route   POST /api/doctors
 // @access  Private (Admin/Receptionist)
-const createDoctor = async (req, res, next) => {
+export const createDoctor = async (req, res, next) => {
   try {
     const { name, specialization, availability_start, availability_end, slot_duration } = req.body;
     
@@ -25,7 +25,7 @@ const createDoctor = async (req, res, next) => {
 // @desc    Get all doctors
 // @route   GET /api/doctors
 // @access  Public/Private
-const getDoctors = async (req, res, next) => {
+export const getDoctors = async (req, res, next) => {
   try {
     const doctors = await Doctor.find();
     res.status(200).json({ success: true, data: doctors });
@@ -37,7 +37,7 @@ const getDoctors = async (req, res, next) => {
 // @desc    Get single doctor by ID
 // @route   GET /api/doctors/:id
 // @access  Public/Private
-const getDoctorById = async (req, res, next) => {
+export const getDoctorById = async (req, res, next) => {
   try {
     const doctor = await Doctor.findById(req.params.id);
     
@@ -51,8 +51,4 @@ const getDoctorById = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  createDoctor,
-  getDoctors,
-  getDoctorById
-};
+

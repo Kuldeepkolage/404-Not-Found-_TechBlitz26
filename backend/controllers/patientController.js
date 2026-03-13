@@ -1,9 +1,9 @@
-const Patient = require('../models/Patient');
+import Patient from '../models/Patient.js';
 
 // @desc    Create new patient
 // @route   POST /api/patients
 // @access  Private (Receptionist)
-const createPatient = async (req, res, next) => {
+export const createPatient = async (req, res, next) => {
   try {
     const { name, phone, email, age, gender } = req.body;
     
@@ -31,7 +31,7 @@ const createPatient = async (req, res, next) => {
 // @desc    Get all patients
 // @route   GET /api/patients
 // @access  Private (Receptionist/Doctor)
-const getPatients = async (req, res, next) => {
+export const getPatients = async (req, res, next) => {
   try {
     const patients = await Patient.find();
     res.status(200).json({ success: true, data: patients });
@@ -43,7 +43,7 @@ const getPatients = async (req, res, next) => {
 // @desc    Get single patient by ID
 // @route   GET /api/patients/:id
 // @access  Private (Receptionist/Doctor)
-const getPatientById = async (req, res, next) => {
+export const getPatientById = async (req, res, next) => {
   try {
     const patient = await Patient.findById(req.params.id);
     
@@ -57,8 +57,4 @@ const getPatientById = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  createPatient,
-  getPatients,
-  getPatientById
-};
+

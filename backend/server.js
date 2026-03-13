@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import connectDB from "./config/db.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
@@ -9,26 +10,28 @@ import doctorRoutes from "./routes/doctorRoutes.js";
 import appointmentRoutes from "./routes/appointmentRoutes.js";
 
 dotenv.config();
+
+// Connect Database
 connectDB();
 
 const app = express();
-app.use(express.json());
 
+// Middleware
+app.use(express.json());
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/patients", patientRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/appointments", appointmentRoutes);
 
+// Error Middleware
 app.use(errorHandler);
 
-app.listen(5000,()=>{
-    console.log("Server running on port 5000")
-})
-
-const authRoutes = require("./routes/authRoutes")
-
-app.use("/auth",authRoutes)
-
-require("dotenv").config()
+// Server Port
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+});

@@ -1,33 +1,35 @@
-require("dotenv").config()
-const mongoose = require("mongoose")
-const bcrypt = require("bcrypt")
-const User = require("../models/User")
+import dotenv from "dotenv";
+dotenv.config({ path: "../.env" });
+import mongoose from "mongoose";
+import User from "../models/User.js";
 
-mongoose.connect(
-process.env.MONGO_URI
-)
+mongoose.connect(process.env.MONGO_URI);
 
-async function seed(){
+async function seed() {
+  try {
+    // Clear existing users to avoid unique constraint errors on multiples runs
+    await User.deleteMany({});
 
- const password = await bcrypt.hash("123456",10)
+    await User.create({
+      name: "Dr Sharma",
+      email: "doctor@test.com",
+      password: "password123", // Pre-save hook will hash this
+      role: "doctor"
+    });
 
- await User.create({
-  name:"Dr Sharma",
-  email:"doctor@test.com",
-  password,
-  role:"doctor"
- })
+    await User.create({
+      name: "Reception",
+      email: "reception@test.com",
+      password: "password123", // Pre-save hook will hash this
+      role: "receptionist"
+    });
 
- await User.create({
-  name:"Reception",
-  email:"reception@test.com",
-  password,
-  role:"receptionist"
- })
-
- console.log("Users seeded")
-
- process.exit()
+    console.log("Users seeded successfully!");
+    process.exit(0);
+  } catch (error) {
+    console.error("Error seeding users:", error);
+    process.exit(1);
+  }
 }
 
-seed()
+seed();

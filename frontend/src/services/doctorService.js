@@ -4,7 +4,7 @@ export const doctorService = {
   getDoctors: async () => {
     try {
       const response = await api.get('/doctors');
-      return response.data;
+      return response.data.data || response.data;
     } catch (error) {
       console.error('Failed to fetch doctors:', error);
       // fallback for UI development without backend
@@ -19,7 +19,7 @@ export const doctorService = {
   getAvailableSlots: async (doctorId, date) => {
     try {
       const response = await api.get(`/slots/${doctorId}/${date}`);
-      return response.data;
+      return response.data.data || response.data;
     } catch (error) {
       console.error('Failed to fetch slots:', error);
       // Fallback response for UI dev
