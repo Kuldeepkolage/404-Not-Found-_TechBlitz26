@@ -43,5 +43,16 @@ export const appointmentService = {
       toast.error('Failed to cancel appointment');
       throw error;
     }
+  },
+
+  reschedule: async (id, date, time) => {
+    try {
+      const response = await api.put(`/appointments/${id}/reschedule`, { date, time });
+      toast.success('Appointment rescheduled successfully!');
+      return response.data;
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to reschedule appointment');
+      throw error;
+    }
   }
 };
