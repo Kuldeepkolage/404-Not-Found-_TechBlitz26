@@ -123,3 +123,109 @@ We plan to integrate an AI-powered chatbot that can:
 ---
 
 ## 📂 Project Structure
+backend/
+controllers/
+models/
+routes/
+middleware/
+
+frontend/
+components/
+pages/
+services/
+
+---
+
+## ⚙️ Installation
+
+### 1️⃣ Clone the repository
+
+
+git clone https://github.com/your-username/ClinicOS.git
+
+
+### 2️⃣ Install backend dependencies
+
+
+cd backend
+npm install
+
+
+### 3️⃣ Install frontend dependencies
+
+
+cd frontend
+npm install
+
+
+### 4️⃣ Run backend
+
+
+node server.js
+
+
+### 5️⃣ Run frontend
+
+
+npm run dev
+
+
+---
+
+## 🔑 Demo Accounts
+
+For testing purposes:
+
+Patient  
+email: patient@clinic.com  
+password: 123456
+
+Doctor  
+email: doctor@clinic.com  
+password: 123456
+
+Receptionist  
+email: reception@clinic.com  
+password: 123456
+
+---
+
+## 🧪 API Endpoints
+
+Authentication
+
+POST /api/auth/register
+POST /api/auth/login
+
+
+Appointments
+
+POST /api/appointments/book
+GET /api/appointments
+PUT /api/appointments/reschedule/:id
+DELETE /api/appointments/:id
+
+
+---
+
+## 🎯 Future Improvements
+
+- AI Chatbot integration
+- SMS/Email appointment reminders
+- Doctor availability management
+- Calendar based scheduling
+- Telemedicine integration
+
+---
+
+## 👨‍💻 Team
+
+Team Name: **404 Not Found**
+
+Developed during a hackathon to demonstrate the power of full-stack development in solving real-world healthcare scheduling challenges.
+
+---
+
+## 📜 License
+
+This project is developed for educational and hackathon purposes.
