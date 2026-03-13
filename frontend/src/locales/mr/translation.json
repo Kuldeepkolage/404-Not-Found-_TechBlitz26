@@ -1,0 +1,83 @@
+{
+  "translation": {
+    "login": {
+      "subtitle": "तुमच्या व्यावसायिक खात्यात साइन इन करा",
+      "email_label": "ईमेल पत्ता",
+      "email_placeholder": "receptionist@clinic.com",
+      "password_label": "पासवर्ड",
+      "password_placeholder": "तुमचा पासवर्ड टाका",
+      "sign_in_button": "साइन इन करा",
+      "demo_accounts": "डेमो खाती:",
+      "demo_password": "पासवर्ड:"
+    },
+    "roles": {
+      "doctor": "डॉक्टर",
+      "receptionist": "रिसेप्शनिस्ट",
+      "guest": "अतिथी"
+    },
+    "clinic_staff": "क्लिनिक कर्मचारी",
+    "search_placeholder": "रुग्ण, भेटी शोधा...",
+    "doctor_dashboard": {
+      "hello": "नमस्कार, {{name}}",
+      "you_have": "तुमच्या आज ",
+      "pending_appointments": " प्रलंबित भेटी ",
+      "today_next_consult": "आहेत. तुमचा पुढील सल्ला सकाळी 10:00 वाजता आहे.",
+      "todays_schedule": "आजचे वेळापत्रक",
+      "view_all": "सर्व पहा →",
+      "loading_schedule": "वेळापत्रक लोड होत आहे...",
+      "status": {
+        "Confirmed": "निश्चित",
+        "Pending": "प्रलंबित"
+      },
+      "view_notes": "नोट्स पहा",
+      "no_appointments": "आजसाठी कोणतीही भेट निश्चित केलेली नाही.",
+      "weekly_summary": "साप्ताहिक सारांश",
+      "patients_seen": "पाहिलेले रुग्ण",
+      "hours_consulted": "सल्ल्याचे तास"
+    },
+    "receptionist_dashboard": {
+      "title": "रिसेप्शनिस्ट डॅशबोर्ड",
+      "subtitle": "आज क्लिनिकमध्ये काय घडत आहे ते येथे आहे.",
+      "new_appointment": "नवीन भेट",
+      "stats": {
+        "total_appointments": "एकूण भेटी",
+        "new_patients": "नवीन रुग्ण",
+        "clinic_activity": "क्लिनिक क्रियाकलाप"
+      },
+      "recent_appointments": "अलीकडील भेटी",
+      "view_calendar": "कॅलेंडर पहा →",
+      "table_headers": {
+        "patient": "रुग्ण",
+        "doctor": "डॉक्टर",
+        "date_time": "तारीख आणि वेळ",
+        "status": "स्थिती"
+      },
+      "loading": "भेटी लोड होत आहेत...",
+      "no_recent_appointments": "कोणतीही अलीकडील भेट आढळली नाही."
+    },
+    "sidebar": {
+      "main_menu": "मुख्य मेनू",
+      "receptionist": {
+        "dashboard": "डॅशबोर्ड",
+        "book": "भेट बुक करा",
+        "patients": "रुग्ण यादी",
+        "calendar": "कॅलेंडर पहा"
+      },
+      "doctor": {
+        "overview": "आढावा",
+        "schedule": "आगामी वेळापत्रक",
+        "patients": "माझे रुग्ण",
+        "calendar": "कॅलेंडर पहा"
+      },
+      "sign_out": "साइन आउट"
+    },
+    "dummy_data": {
+      "John Doe": "जॉन डो",
+      "Jane Smith": "जेन स्मिथ",
+      "Dr. Smith": "डॉ. स्मिथ",
+      "Dr. Johnson": "डॉ. जॉन्सन",
+      "Consultation": "सल्लामसलत",
+      "Follow up": "पाठपुरावा"
+    }
+  }
+}
