@@ -19,7 +19,7 @@ const DashboardLayout = () => {
   
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      <Navbar />
+      <Navbar onMenuClick={() => setSidebarOpen(true)} />
       <div className="flex flex-1 overflow-hidden relative">
         <Sidebar isOpen={sidebarOpen} />
         {/* Mobile Sidebar Overlay */}

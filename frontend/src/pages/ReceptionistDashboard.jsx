@@ -3,6 +3,7 @@ import { Users, CalendarDays, TrendingUp, Activity, Plus } from 'lucide-react';
 import { appointmentService } from '../services/appointmentService';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
 
 const ReceptionistDashboard = () => {
   const { t, i18n } = useTranslation();
@@ -13,17 +14,26 @@ const ReceptionistDashboard = () => {
   const [newDate, setNewDate] = useState('');
   const [newTime, setNewTime] = useState('');
 
+  const fetchAppointments = async () => {
+    try {
+      setLoading(true);
+      const data = await appointmentService.getAppointments();
+      setAppointments(data.data || data || []);
+    } catch (error) {
+      console.error('Failed to fetch appointments:', error);
+      setAppointments([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleRescheduleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (!selectedAppointment || !newDate || !newTime) return;
       await appointmentService.reschedule(selectedAppointment._id || selectedAppointment.id, newDate, newTime);
       
-      setAppointments(appointments.map(appt => 
-        (appt._id === selectedAppointment._id || appt.id === selectedAppointment.id) 
-          ? { ...appt, date: newDate, time: newTime } 
-          : appt
-      ));
+      await fetchAppointments();
       
       setShowRescheduleModal(false);
       setSelectedAppointment(null);
@@ -31,6 +41,16 @@ const ReceptionistDashboard = () => {
       setNewTime('');
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleCancel = async (appointmentId) => {
+    if (!confirm('Are you sure you want to cancel this appointment?')) return;
+    try {
+      await appointmentService.cancel(appointmentId);
+      await fetchAppointments();
+    } catch (error) {
+      console.error('Failed to cancel appointment:', error);
     }
   };
 
@@ -53,20 +73,6 @@ const ReceptionistDashboard = () => {
   ];
 
   useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const data = await appointmentService.getAppointments();
-        setAppointments(data || []);
-      } catch (error) {
-        // Fallback for UI visualization if backend is unavailable
-        setAppointments([
-            { _id: '1', patientName: 'John Doe', doctor: 'Dr. Smith', date: '2024-03-15', time: '10:00 AM', status: 'Confirmed' },
-            { _id: '2', patientName: 'Jane Smith', doctor: 'Dr. Johnson', date: '2024-03-15', time: '02:00 PM', status: 'Pending' }
-        ]);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchAppointments();
   }, []);
 
@@ -123,36 +129,34 @@ const ReceptionistDashboard = () => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider">
-                <th className="px-6 py-4 font-semibold">Patient</th>
-                <th className="px-6 py-4 font-semibold">Doctor</th>
-                <th className="px-6 py-4 font-semibold">Date & Time</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
-                <th className="px-6 py-4 font-semibold text-right">Actions</th>
                 <th className="px-6 py-4 font-semibold">{t('receptionist_dashboard.table_headers.patient')}</th>
                 <th className="px-6 py-4 font-semibold">{t('receptionist_dashboard.table_headers.doctor')}</th>
                 <th className="px-6 py-4 font-semibold">{t('receptionist_dashboard.table_headers.date_time')}</th>
                 <th className="px-6 py-4 font-semibold">{t('receptionist_dashboard.table_headers.status')}</th>
+                <th className="px-6 py-4 font-semibold text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {loading ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-8 text-center text-slate-500">Loading appointments...</td>
-                  <td colSpan="4" className="px-6 py-8 text-center text-slate-500">{t('receptionist_dashboard.loading')}</td>
+                  <td colSpan="5" className="px-6 py-8 text-center text-slate-500">{t('receptionist_dashboard.loading')}</td>
                 </tr>
               ) : appointments.slice(0, 5).map((appt) => (
                 <tr key={appt._id || appt.id} className="hover:bg-slate-50/50 transition-colors">
                   <td className="px-6 py-4">
-                    <div className="font-semibold text-slate-900">{t(`dummy_data.${appt.patientName}`, appt.patientName)}</div>
+                    <div className="font-semibold text-slate-900">{appt.patient_id?.name || appt.patientName || 'Unknown'}</div>
                   </td>
-                  <td className="px-6 py-4 text-slate-600">{t(`dummy_data.${appt.doctor}`, appt.doctor)}</td>
+                  <td className="px-6 py-4 text-slate-600">{appt.doctor_id?.name || appt.doctor || 'Unknown'}</td>
                   <td className="px-6 py-4">
                     <div className="text-slate-900 font-medium">{formatDate(appt.date, i18n.language)}</div>
-                    <div className="text-slate-500 text-sm border border-slate-200 rounded px-2 py-0.5 mt-1 inline-block">{formatTime(appt.time, i18n.language)}</div>
+                    <div className="text-slate-500 text-sm border border-slate-200 rounded px-2 py-0.5 mt-1 inline-block">{formatTime(appt.start_time || appt.time, i18n.language)}</div>
                   </td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                      appt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                      appt.status === 'completed' ? 'bg-blue-100 text-blue-700' :
+                      appt.status === 'confirmed' ? 'bg-emerald-100 text-emerald-700' : 
+                      appt.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                      'bg-amber-100 text-amber-700'
                     }`}>
                       {t(`doctor_dashboard.status.${appt.status}`, appt.status)}
                     </span>
@@ -162,20 +166,25 @@ const ReceptionistDashboard = () => {
                       onClick={() => {
                         setSelectedAppointment(appt);
                         setNewDate(appt.date);
-                        setNewTime(appt.time);
+                        setNewTime(appt.start_time || appt.time);
                         setShowRescheduleModal(true);
                       }}
-                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium mr-3"
                     >
                       Reschedule
+                    </button>
+                    <button 
+                      onClick={() => handleCancel(appt._id || appt.id)}
+                      className="text-red-600 hover:text-red-800 text-sm font-medium"
+                    >
+                      Cancel
                     </button>
                   </td>
                 </tr>
               ))}
               {appointments.length === 0 && !loading && (
                 <tr>
-                   <td colSpan="5" className="px-6 py-8 text-center text-slate-500 bg-slate-50/50">No recent appointments found.</td>
-                   <td colSpan="4" className="px-6 py-8 text-center text-slate-500 bg-slate-50/50">{t('receptionist_dashboard.no_recent_appointments')}</td>
+                   <td colSpan="5" className="px-6 py-8 text-center text-slate-500 bg-slate-50/50">{t('receptionist_dashboard.no_recent_appointments')}</td>
                 </tr>
               )}
             </tbody>

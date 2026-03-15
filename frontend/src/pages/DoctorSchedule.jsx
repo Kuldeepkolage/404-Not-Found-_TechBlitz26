@@ -11,8 +11,8 @@ const DoctorSchedule = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const data = await appointmentService.getAppointments();
-        setAppointments(data || []);
+        const response = await appointmentService.getAppointments();
+        setAppointments(response.data || response || []);
       } catch (error) {
         setAppointments([]);
       } finally {
@@ -87,18 +87,21 @@ const DoctorSchedule = () => {
                    </div>
                    
                    <div>
-                     <h3 className="text-xl font-bold text-slate-900 mb-1">{appt.patientName || appt.patient}</h3>
+                     <h3 className="text-xl font-bold text-slate-900 mb-1">{appt.patient_id?.name || appt.patientName || 'Unknown'}</h3>
                      <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
-                       <span className="flex items-center"><Clock className="w-4 h-4 mr-1.5 text-slate-400"/> {appt.time}</span>
+                       <span className="flex items-center"><Clock className="w-4 h-4 mr-1.5 text-slate-400"/> {appt.start_time || appt.time}</span>
                        <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                       <span className="flex items-center"><User className="w-4 h-4 mr-1.5 text-slate-400"/> New Patient Consultation</span>
+                       <span className="flex items-center"><User className="w-4 h-4 mr-1.5 text-slate-400"/> {appt.reason || 'Consultation'}</span>
                      </div>
                    </div>
                  </div>
 
                  <div className="flex items-center space-x-4">
                    <span className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm ${
-                     appt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200/50' : 'bg-amber-100 text-amber-700 border border-amber-200/50'
+                     appt.status === 'completed' ? 'bg-blue-100 text-blue-700 border border-blue-200/50' :
+                     appt.status === 'confirmed' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200/50' : 
+                     appt.status === 'cancelled' ? 'bg-red-100 text-red-700 border border-red-200/50' :
+                     'bg-amber-100 text-amber-700 border border-amber-200/50'
                    }`}>
                      {appt.status}
                    </span>

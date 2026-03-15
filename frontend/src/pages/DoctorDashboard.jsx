@@ -22,14 +22,11 @@ const DoctorDashboard = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const data = await appointmentService.getAppointments();
-        // Assuming we filter for today's. Just slicing for now
-        setTodaysAppointments((data || []).slice(0, 5));
+        const response = await appointmentService.getTodayAppointments();
+        const data = response.data || response;
+        setTodaysAppointments(data || []);
       } catch (error) {
-        setTodaysAppointments([
-          { id: 1, patient: 'John Doe', time: '10:00 AM', status: 'Confirmed', type: 'Consultation' },
-          { id: 2, patient: 'Jane Smith', time: '02:00 PM', status: 'Pending', type: 'Follow up' },
-        ]);
+        setTodaysAppointments([]);
       } finally {
         setLoading(false);
       }
@@ -69,19 +66,22 @@ const DoctorDashboard = () => {
               <div className="p-8 text-center text-slate-500 bg-white rounded-2xl border border-slate-200">{t('doctor_dashboard.loading_schedule')}</div>
             ) : todaysAppointments.length > 0 ? (
               todaysAppointments.map(appt => (
-                <div key={appt.id} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+                <div key={appt._id} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
                   <div className="flex items-center space-x-5">
                     <div className="w-16 h-14 bg-blue-50 text-blue-600 rounded-xl flex flex-col items-center justify-center font-bold font-mono text-sm leading-tight px-1 text-center">
-                      {formatTime(appt.time, i18n.language).split(' ').map((part, idx) => <span key={idx}>{part}</span>)}
+                      {formatTime(appt.start_time || appt.time, i18n.language).split(' ').map((part, idx) => <span key={idx}>{part}</span>)}
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-lg mb-0.5">{t(`dummy_data.${appt.patient}`, appt.patient)}</h3>
-                      <p className="text-sm text-slate-500">{t(`dummy_data.${appt.type}`, appt.type)}</p>
+                      <h3 className="font-bold text-slate-900 text-lg mb-0.5">{appt.patient_id?.name || appt.patientName || 'Unknown'}</h3>
+                      <p className="text-sm text-slate-500">{appt.reason || 'Consultation'}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                      appt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                      appt.status === 'completed' ? 'bg-blue-100 text-blue-700' :
+                      appt.status === 'confirmed' ? 'bg-emerald-100 text-emerald-700' : 
+                      appt.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                      'bg-amber-100 text-amber-700'
                     }`}>
                       {t(`doctor_dashboard.status.${appt.status}`, appt.status)}
                     </span>

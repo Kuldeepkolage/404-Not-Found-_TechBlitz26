@@ -1,19 +1,28 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { 
+import { 
   createPatient, 
   getPatients, 
-  getPatientById 
-} = require('../controllers/patientController');
+  getPatientById,
+  updatePatient,
+  deletePatient,
+  getPatientAppointments
+} from '../controllers/patientController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { allowRoles } from '../middleware/roleMiddleware.js';
 
-// You can import and add your authentication middleware here to protect these routes
-// const { protect, authorize } = require('../middleware/auth');
+// Protected routes
+router.use(protect);
 
 router.route('/')
-  .post(createPatient) // e.g. .post(protect, authorize('receptionist'), createPatient)
+  .post(allowRoles('receptionist'), createPatient)
   .get(getPatients);
 
 router.route('/:id')
-  .get(getPatientById);
+  .get(getPatientById)
+  .put(allowRoles('receptionist'), updatePatient)
+  .delete(allowRoles('receptionist'), deletePatient);
 
-module.exports = router;
+router.get('/:id/appointments', getPatientAppointments);
+
+export default router;

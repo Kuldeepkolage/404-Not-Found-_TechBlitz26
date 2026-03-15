@@ -1,11 +1,11 @@
 import React from 'react';
-import { Bell, Search, LogOut, Activity, Stethoscope, Users } from 'lucide-react';
+import { Bell, Search, LogOut, Activity, Stethoscope, Users, Menu } from 'lucide-react';
 import { useAuth } from '../utils/AuthContext';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 
-const Navbar = () => {
+const Navbar = ({ onMenuClick }) => {
   const { user, logout } = useAuth();
   const { t } = useTranslation();
   const RoleIcon = user?.role === 'doctor' ? Stethoscope : Users;
@@ -14,7 +14,10 @@ const Navbar = () => {
     <nav className="bg-white border-b border-slate-200 px-6 py-3.5 sticky top-0 z-40 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3 lg:hidden">
-           <Activity className="w-8 h-8 text-blue-600" />
+           <button onClick={onMenuClick} className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-md">
+             <Menu className="w-6 h-6" />
+           </button>
+           <Activity className="w-8 h-8 text-blue-600 hidden sm:block" />
            <span className="text-xl font-bold text-slate-900">ClinicPro</span>
         </div>
         

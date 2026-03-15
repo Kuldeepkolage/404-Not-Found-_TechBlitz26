@@ -1,33 +1,59 @@
-require("dotenv").config()
-const mongoose = require("mongoose")
-const bcrypt = require("bcrypt")
-const User = require("../models/User")
+import dotenv from "dotenv";
+dotenv.config({ path: "./.env" });
+import mongoose from "mongoose";
+import User from "../models/User.js";
 
-mongoose.connect(
-process.env.MONGO_URI
-)
+mongoose.connect(process.env.MONGO_URI);
 
-async function seed(){
+async function seed() {
+  try {
+    // Clear existing users to avoid unique constraint errors on multiples runs
+    await User.deleteMany({});
 
- const password = await bcrypt.hash("123456",10)
+    // Create demo users matching the login page credentials
+    await User.create({
+      name: "Dr. Smith",
+      email: "doctor@clinic.com",
+      password: "password", // Pre-save hook will hash this
+      role: "doctor"
+    });
 
- await User.create({
-  name:"Dr Sharma",
-  email:"doctor@test.com",
-  password,
-  role:"doctor"
- })
+    await User.create({
+      name: "Receptionist",
+      email: "receptionist@clinic.com",
+      password: "password", // Pre-save hook will hash this
+      role: "receptionist"
+    });
 
- await User.create({
-  name:"Reception",
-  email:"reception@test.com",
-  password,
-  role:"receptionist"
- })
+    // Additional test users
+    await User.create({
+      name: "Dr Sharma",
+      email: "doctor@test.com",
+      password: "password123",
+      role: "doctor"
+    });
 
- console.log("Users seeded")
+    await User.create({
+      name: "Reception",
+      email: "reception@test.com",
+      password: "password123",
+      role: "receptionist"
+    });
 
- process.exit()
+    console.log("✅ Users seeded successfully!");
+    console.log("");
+    console.log("Demo Credentials:");
+    console.log("  Doctor: doctor@clinic.com / password");
+    console.log("  Receptionist: receptionist@clinic.com / password");
+    console.log("");
+    console.log("Test Credentials:");
+    console.log("  Doctor: doctor@test.com / password123");
+    console.log("  Receptionist: reception@test.com / password123");
+    process.exit(0);
+  } catch (error) {
+    console.error("❌ Error seeding users:", error);
+    process.exit(1);
+  }
 }
 
-seed()
+seed();

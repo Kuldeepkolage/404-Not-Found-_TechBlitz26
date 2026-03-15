@@ -1,13 +1,14 @@
 {
-  "name": "frontend",
+  "name": "clinicpro-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "vite build && echo 'Build complete. Deploy dist/ folder to your hosting service.'"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.15",
