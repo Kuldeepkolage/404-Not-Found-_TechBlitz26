@@ -1,11 +1,23 @@
 export const slotGenerator = (start, end, duration) => {
   const slots = [];
-  let current = new Date(`2021-01-01T${start}:00`);
-  const endTime = new Date(`2021-01-01T${end}:00`);
+  
+  // Parse start time
+  const [startHour, startMin] = start.split(':').map(Number);
+  let current = new Date();
+  current.setHours(startHour, startMin, 0, 0);
+  
+  // Parse end time
+  const [endHour, endMin] = end.split(':').map(Number);
+  const endTime = new Date();
+  endTime.setHours(endHour, endMin, 0, 0);
   
   while (current < endTime) {
-    slots.push(current.toTimeString().slice(0, 5)); // e.g. "10:00"
+    const hours = current.getHours().toString().padStart(2, '0');
+    const minutes = current.getMinutes().toString().padStart(2, '0');
+    slots.push(`${hours}:${minutes}`); // e.g. "10:00"
     current = new Date(current.getTime() + duration * 60000);
   }
   return slots;
 };
+
+export default slotGenerator;

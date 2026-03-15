@@ -12,13 +12,15 @@ const CalendarView = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const data = await appointmentService.getAppointments();
+        const response = await appointmentService.getAppointments();
+        const data = response.data || response;
         
         // Map backend appointments to FullCalendar event format
-        const calendarEvents = data.map(appt => {
+        const calendarEvents = (data || []).map(appt => {
           // Parse time like "10:00 AM" into datetime
           let dateStr = appt.date || new Date().toISOString().split('T')[0];
-          let timeParts = appt.time ? appt.time.match(/(\d+):(\d+)\s*(AM|PM)/i) : null;
+          let timeStr = appt.start_time || appt.time || '10:00 AM';
+          let timeParts = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
           let hour = 10, minute = 0;
           
           if (timeParts) {
@@ -34,17 +36,27 @@ const CalendarView = () => {
           const endDate = new Date(startDate);
           endDate.setHours(hour + 1, minute, 0); // Assuming 1 hour slot
 
+          const getStatusColor = (status) => {
+            switch(status) {
+              case 'completed': return '#3b82f6';
+              case 'confirmed': return '#10b981';
+              case 'cancelled': return '#ef4444';
+              default: return '#f59e0b';
+            }
+          };
+
           return {
             id: appt._id || Math.random().toString(),
-            title: `${appt.patientName || appt.patient} - ${appt.status}`,
+            title: `${appt.patient_id?.name || appt.patientName || 'Unknown'} - ${appt.status}`,
             start: startDate.toISOString(),
             end: endDate.toISOString(),
-            backgroundColor: appt.status === 'Confirmed' ? '#10b981' : '#f59e0b',
-            borderColor: appt.status === 'Confirmed' ? '#059669' : '#d97706',
+            backgroundColor: getStatusColor(appt.status),
+            borderColor: getStatusColor(appt.status),
             textColor: '#ffffff',
             extendedProps: {
                status: appt.status,
-               doctor: appt.doctor
+               doctor: appt.doctor_id?.name || appt.doctor,
+               reason: appt.reason
             }
           };
         });

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -37,16 +37,27 @@ export const authService = {
       toast.success('Login successful!');
       return { token, role: user.role, user };
     } catch (error) {
-      // For demo fallback if backend is not running, uncomment below:
-      if (email === 'receptionist@clinic.com' || email === 'doctor@clinic.com') {
-         const role = email.split('@')[0];
-         localStorage.setItem('token', 'demo-token');
-         localStorage.setItem('role', role);
-         toast.success(`Demo Login successful as ${role}!`);
-         return { token: 'demo', role };
+      // Check if it's a network error (backend not running)
+      if (!error.response || error.code === 'ECONNREFUSED') {
+        // For demo fallback if backend is not running
+        if ((email === 'receptionist@clinic.com' || email === 'reception@test.com') && (password === 'password' || password === 'password123')) {
+           const role = 'receptionist';
+           localStorage.setItem('token', 'demo-token');
+           localStorage.setItem('role', role);
+           toast.success(`Demo Login successful as ${role}! (Offline Mode)`);
+           return { token: 'demo', role, user: { name: 'Demo Receptionist', role } };
+        }
+        if ((email === 'doctor@clinic.com' || email === 'doctor@test.com') && (password === 'password' || password === 'password123')) {
+           const role = 'doctor';
+           localStorage.setItem('token', 'demo-token');
+           localStorage.setItem('role', role);
+           toast.success(`Demo Login successful as ${role}! (Offline Mode)`);
+           return { token: 'demo', role, user: { name: 'Demo Doctor', role } };
+        }
+        toast.error('Cannot connect to backend server. Please make sure the server is running.');
+      } else {
+        toast.error(error.response?.data?.message || 'Login failed. Please check your credentials.');
       }
-
-      toast.error(error.response?.data?.message || 'Login failed Check backend connection.');
       throw error;
     }
   },

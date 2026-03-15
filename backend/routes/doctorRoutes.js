@@ -3,17 +3,22 @@ const router = express.Router();
 import { 
   createDoctor, 
   getDoctors, 
-  getDoctorById 
+  getDoctorById,
+  updateDoctor,
+  deleteDoctor,
+  getAvailableSlots
 } from '../controllers/doctorController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { allowRoles } from '../middleware/roleMiddleware.js';
 
-// You can import and add your authentication middleware here to protect these routes
-// const { protect, authorize } = require('../middleware/auth');
+// Public routes
+router.get('/', getDoctors);
+router.get('/:id', getDoctorById);
+router.get('/:id/slots/:date', protect, getAvailableSlots);
 
-router.route('/')
-  .post(createDoctor) // e.g. .post(protect, authorize('receptionist', 'admin'), createDoctor)
-  .get(getDoctors);
-
-router.route('/:id')
-  .get(getDoctorById);
+// Protected routes - Receptionist/Admin only
+router.post('/', protect, allowRoles('receptionist'), createDoctor);
+router.put('/:id', protect, allowRoles('receptionist'), updateDoctor);
+router.delete('/:id', protect, allowRoles('receptionist'), deleteDoctor);
 
 export default router;
